@@ -199,6 +199,17 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- BOBO
+-- Copy to clipboard in normal mode
+vim.api.nvim_set_keymap('n', '<leader>y', '"+yy', { noremap = true, silent = true })
+-- Copy to clipboard in visual mode
+vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true })
+-- Paste from clipboard in normal mode
+vim.api.nvim_set_keymap('n', '<leader>p', '"+p', { noremap = true, silent = true })
+-- Paste from clipboard in insert mode
+vim.api.nvim_set_keymap('i', '<C-v>', '<C-r>+', { noremap = true, silent = true })
+
+
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
@@ -876,28 +887,58 @@ require('lazy').setup({
     },
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
-        },
-      }
+  -- { -- You can easily change to a different colorscheme.
+  --   -- Change the name of the colorscheme plugin below, and then
+  --   -- change the command in the config to whatever the name of that colorscheme is.
+  --   --
+  --   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+  --   'folke/tokyonight.nvim',
+  --   priority = 1000, -- Make sure to load this before all the other start plugins.
+  --   config = function()
+  --     ---@diagnostic disable-next-line: missing-fields
+  --     require('tokyonight').setup {
+  --       styles = {
+  --         comments = { italic = false }, -- Disable italics in comments
+  --       },
+  --     }
+  --
+  --     -- Load the colorscheme here.
+  --     -- Like many other themes, this one has different styles, and you could load
+  --     -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+  --     vim.cmd.colorscheme 'tokyonight'
+  --   end,
+  -- },
+  
+  -- BOBO
+-- Gruvbox colorscheme
+{
+  'ellisonleao/gruvbox.nvim',
+  priority = 1000, -- make sure this loads early
+  config = function()
+    -- Optional: configure gruvbox options
+    require('gruvbox').setup {
+      undercurl = true,
+      underline = true,
+      bold = true,
+      italic = {
+        strings = false,
+        comments = false,
+        operators = false,
+        folds = false,
+      },
+      invert_selection = false,
+      invert_signs = false,
+      invert_tabline = false,
+      invert_intend_guides = false,
+      contrast = "soft",   -- can be "hard", "soft" or empty string
+      palette_overrides = {},
+      overrides = {},
+    }
 
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
-    end,
-  },
-
+    -- Actually apply the colorscheme
+    vim.cmd.colorscheme 'gruvbox'
+  end,
+},
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
